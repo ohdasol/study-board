@@ -44,7 +44,7 @@ public class AccountService implements UserDetailsService {
     public Account signUp(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
         sendVerificationEmail(newAccount);
-        return newAccount;
+        return newAccount; // 새로 생성한 Account를 반환
     }
 
     private Account saveNewAccount(SignUpForm signUpForm) {
@@ -75,17 +75,29 @@ public class AccountService implements UserDetailsService {
     }
 
     /**
+     * 정석대로 AuthenticationManager를 사용하는 방법이 아닌 SecurityContext를 이용한 방법으로 구현
+     *
      * SecurityContextHolder.getContext()로 SecurityContext를 추출, 전역에서 호출할 수 있고 하나의 Context 객체가 반환
      * setAuthentication을 이용해 인증 토큰을 전달할 수 있는데 이 때 전달해야할 토큰이 UsernamePasswordAuthenticationToken
      * UsernamePasswordAuthenticationToken의 생성자로 nickname, password, Role을 각각 전달
      * Role은 인가(권한) 개념, 현재 USER 레벨(사용자)로 정의
+     * 
+     * @CurrentUser 어노테이션에 의해 @AuthenticationPrincipal이 적용되고, 인증 여부에 따라 account를 반환해서 넘겨줄 수 있게 됨
      */
     public void login(Account account) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(new UserAccount(account),
                 account.getPassword(), Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
-        SecurityContextHolder.getContext().setAuthentication(token); // AuthenticationManager를 쓰는 방법이 정석적인 방ㅇ법
+        SecurityContextHolder.getContext().setAuthentication(token);
     }
 
+    /**
+     * UserDetailsService가 제공하는 인터페이스를 재정의
+     * username을 불러오는 방식으로 구현, 사용자가 존재하는지 확인하여 사용자 정보를 반환해 주면 나머지는 spring security가 처리
+     * 이메일 또는 닉네임이 존재하는지 확인해야 하기 때문에 두 가지 정보를 모두 확인
+     * 둘 다 확인했을 때도 계정이 검색되지 않는 경우 UsernameNotFoundException을 생성하여 던짐
+     * 계정이 존재할 경우 UserDetails 인터페이스 구현체를 반환
+     * UserAccount 클래스가 UserDetails 인터페이스를 구현하게 했으므로 해당 객체를 반환
+     */
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

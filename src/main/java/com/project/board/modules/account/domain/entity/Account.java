@@ -144,6 +144,9 @@ public class Account extends AuditingEntity {
 
     }
 
+    /**
+     * 컨트롤러에서 전달된 객체와 DB에서 찾은 객체는 id가 동일하면 같은 객체로 판별
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

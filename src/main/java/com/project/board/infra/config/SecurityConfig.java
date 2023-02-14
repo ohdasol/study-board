@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
-    private final DataSource dataSource;
+    private final DataSource dataSource; // RememberMe 토큰 저장소
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(tokenRepository());
     }
 
+    // RememberMe 토큰 관리를 위한 repository 구현체 추가해야 되지만 직접 구현할 필요 없이 dataSource만 설정해 주면 됨
     @Bean
     public PersistentTokenRepository tokenRepository() {
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();

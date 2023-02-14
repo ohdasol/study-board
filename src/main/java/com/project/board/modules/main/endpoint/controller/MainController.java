@@ -50,7 +50,7 @@ public class MainController {
    *  - 로그인 후 홈 화면 진입시 계정, 스터디, 모임 정보를 조회할 수 있게 쿼리 메서드 및 querydsl을 사용해 구현
    */
   @GetMapping("/")
-  public String home(@CurrentUser Account account, Model model) {
+  public String home(@CurrentUser Account account, Model model) { // @CurrentUser로 인해 현재 인증된 사용자 정보에 따라 객체가 할당
     if (account != null) {
       Account accountLoaded = accountRepository.findAccountWithTagsAndZonesById(account.getId());
       model.addAttribute(accountLoaded);
