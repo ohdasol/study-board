@@ -8,6 +8,7 @@ import org.springframework.validation.Validator;
 
 import java.time.LocalDateTime;
 
+// 날짜 확인을 정확하게 할 수 없으므로 Validator를 생성하여 구현
 @Component
 public class EventValidator implements Validator {
     @Override
@@ -15,6 +16,9 @@ public class EventValidator implements Validator {
         return EventForm.class.isAssignableFrom(clazz);
     }
 
+    /**
+     * 날짜는 현재보다 이전 시점이 아닌지, 서로 관계에 맞는지 검증하는 로직을 추가
+     */
     @Override
     public void validate(Object target, Errors errors) {
         EventForm eventForm = (EventForm) target;

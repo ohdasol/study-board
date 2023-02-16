@@ -48,9 +48,11 @@ public class MainController {
    *
    * account 정보가 있을 때는 home으로 리다이렉트 되도록 하였고, home에서 표시하기 위해 필요한 정보들을 조회할 수 있는 기능 추가
    *  - 로그인 후 홈 화면 진입시 계정, 스터디, 모임 정보를 조회할 수 있게 쿼리 메서드 및 querydsl을 사용해 구현
+   *
+   *  @CurrentUser로 인해 현재 인증된 사용자 정보에 따라 객체가 할당, @AuthenticationPrincipal이 적용되고, 인증 여부에 따라 account를 반환해서 넘겨줌
    */
   @GetMapping("/")
-  public String home(@CurrentUser Account account, Model model) { // @CurrentUser로 인해 현재 인증된 사용자 정보에 따라 객체가 할당
+  public String home(@CurrentUser Account account, Model model) {
     if (account != null) {
       Account accountLoaded = accountRepository.findAccountWithTagsAndZonesById(account.getId());
       model.addAttribute(accountLoaded);

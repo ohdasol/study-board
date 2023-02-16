@@ -34,7 +34,7 @@ public class EventService {
 
     public void updateEvent(Event event, EventForm eventForm) {
         event.updateFrom(eventForm);
-        event.acceptWaitingList();
+        event.acceptWaitingList(); // 모임 인원 수정시에도 반영될 수 있게 대기 목록에 있는 사용자들을 추가시킴
         eventPublisher.publishEvent(new StudyUpdateEvent(event.getStudy(), "'" + event.getTitle() + "' 모임 정보가 수정되었습니다."));
     }
 
@@ -44,19 +44,19 @@ public class EventService {
     }
 
     public void enroll(Event event, Account account) {
-        if (!enrollmentRepository.existsByEventAndAccount(event, account)) {
-            Enrollment enrollment = Enrollment.of(LocalDateTime.now(), event.isAbleToAcceptWaitingEnrollment(), account);
-            event.addEnrollment(enrollment);
-            enrollmentRepository.save(enrollment);
+        if (!enrollmentRepository.existsByEventAndAccount(event, account)) { // 모임에 해당 계정이 참가한 내역 여부 확인
+            Enrollment enrollment = Enrollment.of(LocalDateTime.now(), event.isAbleToAcceptWaitingEnrollment(), account); // 참가 내역이 없으므로 참가 정보를 생성
+            event.addEnrollment(enrollment); // 모임에 참가 정보 등록
+            enrollmentRepository.save(enrollment); // 참가 정보 저장
         }
     }
 
     public void leave(Event event, Account account) {
-        Enrollment enrollment = enrollmentRepository.findByEventAndAccount(event, account);
+        Enrollment enrollment = enrollmentRepository.findByEventAndAccount(event, account); // 참가 내역 조회
         if (!enrollment.isAttended()) {
-            event.removeEnrollment(enrollment);
-            enrollmentRepository.delete(enrollment);
-            event.acceptNextIfAvailable();
+            event.removeEnrollment(enrollment); // 모임에서 참가 내역 삭제
+            enrollmentRepository.delete(enrollment); // 참가 정보 삭제
+            event.acceptNextIfAvailable(); // 모임에서 다음 대기자를 참가 상태로 변경
         }
     }
 

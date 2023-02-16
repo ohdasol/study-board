@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+// StudyForm에서 검증할 수 없는 부분을 추가로 검증하기 위해 validator 생성
 @Component
 @RequiredArgsConstructor
 public class StudyFormValidator implements Validator {
@@ -17,6 +18,7 @@ public class StudyFormValidator implements Validator {
         return StudyForm.class.isAssignableFrom(clazz);
     }
 
+    // 기존 경로와 중복 여부 확인
     @Override
     public void validate(Object target, Errors errors) {
         StudyForm studyForm = (StudyForm) target;

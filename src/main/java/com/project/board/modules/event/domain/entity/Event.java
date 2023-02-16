@@ -16,6 +16,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * 모임(Event) 엔티티 설계
+ *
+ * Event는 Study, Account를 참조할 수 있는 단방향 연관관계
+ * Enrollment와는 양방향 연관관계
+ */
 @NamedEntityGraph(
         name = "Event.withEnrollments",
         attributeNodes = @NamedAttributeNode("enrollments")
@@ -29,7 +35,7 @@ public class Event {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne // 기본 값을 사용하여 단방향 관계를 나타냄
     private Study study;
 
     @ManyToOne
@@ -55,9 +61,9 @@ public class Event {
 
     private Integer limitOfEnrollments;
 
-    @OneToMany(mappedBy = "event") @ToString.Exclude
+    @OneToMany(mappedBy = "event") @ToString.Exclude // 모임과 참가는 서로 양방향 연관관계를 가지고 있으므로 mappedBy를 이용하여 관계를 정의
     @OrderBy("enrolledAt")
-    private List<Enrollment> enrollments = new ArrayList<>();
+    private List<Enrollment> enrollments = new ArrayList<>(); // Collection 필드 초기화
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;
@@ -109,6 +115,7 @@ public class Event {
         return false;
     }
 
+    // 모임 자리 여부 확인 메서드
     public int numberOfRemainSpots() {
         int accepted = (int) this.enrollments.stream()
                 .filter(Enrollment::isAccepted)
@@ -132,32 +139,38 @@ public class Event {
         this.endEnrollmentDateTime = eventForm.getEndEnrollmentDateTime();
     }
 
+    // 모임 유형이 선착순이고 모임 정원이 참가 요청 수보다 큰지 확인
     public boolean isAbleToAcceptWaitingEnrollment() {
         return this.eventType == EventType.FCFS && this.limitOfEnrollments > this.getNumberOfAcceptedEnrollments();
     }
 
+    // 모임에 참가 내역 추가
     public void addEnrollment(Enrollment enrollment) {
         this.enrollments.add(enrollment);
         enrollment.attach(this);
     }
 
+    // 모임에서 참가 내역 삭제
     public void removeEnrollment(Enrollment enrollment) {
         this.enrollments.remove(enrollment);
         enrollment.detachEvent();
     }
 
+    // 대기 중인 있는 참가 신청들이 수용 가능한지 확인하여 첫 번째 신청을 가져와 참가 신청 상태로 변경
     public void acceptNextIfAvailable() {
         if (this.isAbleToAcceptWaitingEnrollment()) {
             this.firstWaitingEnrollment().ifPresent(Enrollment::accept);
         }
     }
 
+    // 참가 신청 중 신청 완료되지 않은 첫 번째 내역을 가져옴
     private Optional<Enrollment> firstWaitingEnrollment() {
         return this.enrollments.stream()
                 .filter(e -> !e.isAccepted())
                 .findFirst();
     }
 
+    // 대기 중인 참가 신청 수용 가능 여부를 판단하여 참가 가능한 수만큼 대기 리스트의 상태를 참가 신청 완료 상태로 변경
     public void acceptWaitingList() {
         if (this.isAbleToAcceptWaitingEnrollment()) {
             List<Enrollment> waitingList = this.enrollments.stream()

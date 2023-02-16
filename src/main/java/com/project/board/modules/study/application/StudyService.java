@@ -158,10 +158,12 @@ public class StudyService {
         studyRepository.delete(study);
     }
 
+    // 스터디 가입
     public void addMember(Study study, Account account) {
         study.addMember(account);
-    }
+    } // Study Entity에 해당 기능을 위임
 
+    // 스터디 탈퇴
     public void removeMember(Study study, Account account) {
         study.removeMember(account);
     }

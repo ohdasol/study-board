@@ -53,9 +53,9 @@ public class AccountService implements UserDetailsService {
         return accountRepository.save(account);
     }
 
-    // 회원 가입시 이메일 전
+    // 회원 가입시 인증 이메일 전송
     public void sendVerificationEmail(Account newAccount) {
-        Context context = new Context();
+        Context context = new Context(); // Context 객체를 이용해 타임리프 파싱해서 사용
         context.setVariable("link", String.format("/check-email-token?token=%s&email=%s", newAccount.getEmailToken(),
                 newAccount.getEmail()));
         context.setVariable("nickname", newAccount.getNickname());
@@ -70,6 +70,7 @@ public class AccountService implements UserDetailsService {
                 .build());
     }
 
+    // email을 이용해 계정 정보(Account Entity) 가져옴
     public Account findAccountByEmail(String email) {
         return accountRepository.findByEmail(email);
     }

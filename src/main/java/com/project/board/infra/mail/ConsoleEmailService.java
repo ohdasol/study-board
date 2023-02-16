@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 // EmailService를 구현하여 로컬에서 로그로 메일 출력하는 클래스
-@Profile("local")
+@Profile("dev")
 @Component
 @Service
 @Slf4j

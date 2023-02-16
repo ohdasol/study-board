@@ -15,6 +15,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * 참가(Enrollment) 엔티티 설계
+ *
+ * Enrollment는 Study와는 관계를 가질 필요가 없음
+ * Account와는 단방향 연관관계
+ * Event와는 양방향 연관관계
+ */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -45,7 +52,7 @@ public class Enrollment {
 
   private boolean attended;
 
-
+  // static 생성자
   public static Enrollment of(LocalDateTime enrolledAt, boolean isAbleToAcceptWaitingEnrollment,
       Account account) {
     Enrollment enrollment = new Enrollment();
@@ -55,6 +62,7 @@ public class Enrollment {
     return enrollment;
   }
 
+  // 모임 참가 수락 여부
   public void accept() {
     this.accepted = true;
   }

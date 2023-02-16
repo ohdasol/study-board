@@ -36,6 +36,16 @@ public class StudySettingsController {
     private final StudyRepository studyRepository;
     private final TagRepository tagRepository;
     private final ZoneRepository zoneRepository;
+
+    /**
+     * ObjectMapper
+     * - JSON을 Java객체로 역직렬화, Java객체를 JSON으로 직렬화할 때 이용하는 라이브러리
+     * - 역직렬화 : String(JSON) -> Object
+     * - 직렬화 : Object -> String(JSON)
+     *
+     * 이 클래스에서는 whitelist를 작성해서 반환해 주기 위해 선언
+     * whitelist : 안전이 증명된 것만 허용
+     */
     private final ObjectMapper objectMapper;
 
     // 소개 수정
@@ -106,7 +116,7 @@ public class StudySettingsController {
                 .collect(Collectors.toList()));
         model.addAttribute("whitelist", objectMapper.writeValueAsString(tagRepository.findAll().stream()
                 .map(Tag::getTitle)
-                .collect(Collectors.toList())));
+                .collect(Collectors.toList()))); // writeValueAsString : Object -> JSON 변환 메서드
         return "study/settings/tags";
     }
 

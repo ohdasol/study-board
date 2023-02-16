@@ -22,7 +22,7 @@ import org.thymeleaf.context.Context;
 import java.time.LocalDateTime;
 
 @Slf4j
-@Async
+@Async // 비동기 처리, 이 어노테이션을 사용하기 위해서는 @EnableAsync 어노테이션이 적용된 설정 클래스가 필요
 @Component
 @Transactional
 @RequiredArgsConstructor

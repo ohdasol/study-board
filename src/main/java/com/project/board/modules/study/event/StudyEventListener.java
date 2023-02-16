@@ -44,6 +44,16 @@ public class StudyEventListener {
     private final TemplateEngine templateEngine;
     private final AppProperties appProperties;
 
+    /**
+     * Iterable
+     * - 반복할 수 있는 데이터 구조, 인터페이스에서 Iterator를 반환하는 iterator()가 메소드로 선언
+     * Iterator
+     * - Collection에 저장된 요소를 읽어오는 것을 표준화한 인터페이스로 데이터를 하나씩 읽어올 때 사용
+     * - 계층구조 List, Set, Queue를 구현하는 클래스들은 iterator 메서드를 가지고 있음
+     *
+     * Collection
+     *  - 자바에서 제공하는 자료구조들의 인터페이스로 List, ArrayList, Stack, Quque, LinkedList 등이 이를 상속받고 있음,  Iterable이 Collection의 상위 인터페이스
+     */
     @EventListener // 이벤트 리스너 명시
     public void handleStudyCreatedEvent(StudyCreatedEvent studyCreatedEvent) { // EventPublisher를 통해 이벤트가 발생될 때 전달한 파라미터가 StudyCreatedEvent일 때 해당 메서드가 호출
         Study study = studyRepository.findStudyWithTagsAndZonesById(studyCreatedEvent.getStudy().getId()); // 관심사와 지역 정보를 추가로 조회

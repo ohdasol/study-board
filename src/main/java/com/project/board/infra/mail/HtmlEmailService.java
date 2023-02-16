@@ -12,7 +12,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 // EmailService를 구현하여 메일을 전송하는 클래스
-@Profile("!local")
+@Profile("!dev")
 @Service
 @Component
 @RequiredArgsConstructor

@@ -44,7 +44,7 @@ import org.hibernate.annotations.ColumnDefault;
 /**
  * @EntityGraph : 
  * JPA를 사용하여 연관관계가 있는 엔티티를 조회할 경우 N + 1 문제가 발생할 수 있는데 이를 해결하기 위해 fetch join을 사용
- * fetch join을 사용하기 위해서는 JPARepository 인터페이스가 기본적으로 제공하는 기본 메서드들에는 사용할 수 가 없어서 이때 사용할 수 있음
+ * fetch join을 사용하기 위해서는 JPARepository 인터페이스가 기본적으로 제공하는 기본 메서드들에는 사용할 수가 없어서 이때 사용할 수 있음
  *
  * N+1 문제 ?
  * 조회 쿼리를 날렸을 때 데이터들의 개수만큼 조인 쿼리가 발생하는 것(성능에 영향을 주기 때문에 방치할 수 없음)
@@ -101,8 +101,9 @@ public class Study {
 
   private String shortDescription;
 
+  // 스터디 설명
   @Lob
-  @Basic(fetch = FetchType.EAGER)
+  @Basic(fetch = FetchType.EAGER) // 즉시로딩 : 특정 엔티티를 조회할 때 연관된 모든 엔티티를 같이 로딩
   private String fullDescription;
 
   @Lob
@@ -260,6 +261,7 @@ public class Study {
     this.memberCount--;
   }
 
+  // 스터디 url을 인코딩하여 반환해 주는 기능
   public String getEncodedPath() {
     return URLEncoder.encode(path, StandardCharsets.UTF_8);
   }
