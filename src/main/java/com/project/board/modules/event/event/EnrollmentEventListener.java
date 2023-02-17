@@ -21,6 +21,7 @@ import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
 
+// 모임 관련 이벤트가 발생했을 때 이벤트를 처리해 줄 이벤트 리스너 구현
 @Slf4j
 @Async // 비동기 처리, 이 어노테이션을 사용하기 위해서는 @EnableAsync 어노테이션이 적용된 설정 클래스가 필요
 @Component

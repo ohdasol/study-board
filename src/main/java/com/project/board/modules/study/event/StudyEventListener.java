@@ -57,7 +57,7 @@ public class StudyEventListener {
     @EventListener // 이벤트 리스너 명시
     public void handleStudyCreatedEvent(StudyCreatedEvent studyCreatedEvent) { // EventPublisher를 통해 이벤트가 발생될 때 전달한 파라미터가 StudyCreatedEvent일 때 해당 메서드가 호출
         Study study = studyRepository.findStudyWithTagsAndZonesById(studyCreatedEvent.getStudy().getId()); // 관심사와 지역 정보를 추가로 조회
-        Iterable<Account> accounts = accountRepository.findAll(AccountPredicates.findByTagsAndZones(study.getTags(), study.getZones())); // 관심사와 지역정보에 해당하는 모든 계정 찾음
+        Iterable<Account> accounts = accountRepository.findAll(AccountPredicates.findByTagsAndZones(study.getTags(), study.getZones())); // 관심사와 지역정보에 해당하는 모든 계정 찾음, querydsl 기능 사용
         for (Account account : accounts) { // 계정을 순차적으로 탐색하면서 메일 알림 설정을 한 계정에는 메일을 전송하고, 웹 알림 설정을 한 계정은 웹 알림을 저장
             Account.NotificationSetting notificationSetting = account.getNotificationSetting();
             if (notificationSetting.isStudyCreatedByEmail()) {

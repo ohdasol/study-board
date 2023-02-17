@@ -132,6 +132,7 @@ public class Study {
   @Accessors(fluent = true) // 메서드가 생성되는 것을 방지
   private boolean useBanner;
 
+  // 스터디 검색 페이지에서 정렬을 위해 사용
   @ColumnDefault(value = "0")
   private Integer memberCount = 0;
 

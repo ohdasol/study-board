@@ -26,6 +26,9 @@ public class EventService {
     private final EnrollmentRepository enrollmentRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * 모임 생성과 관련된 이벤트는 StudyEventListener에서 처리하도록 StudyUpdateEvent로 처리
+     */
     public Event createEvent(Study study, EventForm eventForm, Account account) {
         Event event = Event.from(eventForm, account, study);
         eventPublisher.publishEvent(new StudyUpdateEvent(event.getStudy(), "'" + event.getTitle() + "' 모임이 생성되었습니다."));
@@ -60,6 +63,9 @@ public class EventService {
         }
     }
 
+    /**
+     * 참가 관련 이벤트는 EnrollmentEvent를 전달하도록 함
+     */
     public void acceptEnrollment(Event event, Enrollment enrollment) {
         event.accept(enrollment);
         eventPublisher.publishEvent(new EnrollmentAcceptedEvent(enrollment));

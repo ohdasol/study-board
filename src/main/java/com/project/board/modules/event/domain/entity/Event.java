@@ -62,7 +62,7 @@ public class Event {
     private Integer limitOfEnrollments;
 
     @OneToMany(mappedBy = "event") @ToString.Exclude // 모임과 참가는 서로 양방향 연관관계를 가지고 있으므로 mappedBy를 이용하여 관계를 정의
-    @OrderBy("enrolledAt")
+    @OrderBy("enrolledAt") // 참석 리스트가 조회될 때 참석 날짜 기준으로 정렬
     private List<Enrollment> enrollments = new ArrayList<>(); // Collection 필드 초기화
 
     @Enumerated(EnumType.STRING)
@@ -83,10 +83,12 @@ public class Event {
         return event;
     }
 
+    // 참석하지 않은 상태인지 확인
     public boolean isEnrollableFor(UserAccount userAccount) {
         return isNotClosed() && !isAttended(userAccount) && !isAlreadyEnrolled(userAccount);
     }
 
+    // 참석하지 않은 상태인지 확인
     public boolean isDisenrollableFor(UserAccount userAccount) {
         return isNotClosed() && !isAttended(userAccount) && isAlreadyEnrolled(userAccount);
     }
@@ -95,6 +97,7 @@ public class Event {
         return this.endEnrollmentDateTime.isAfter(LocalDateTime.now());
     }
 
+    // 모임 참석 완료 여부
     private boolean isAlreadyEnrolled(UserAccount userAccount) {
         Account account = userAccount.getAccount();
         for (Enrollment enrollment : this.enrollments) {
@@ -181,18 +184,21 @@ public class Event {
         }
     }
 
+    // 관지자 확인 모임이고, 참석 가능할 경우 참가 상태 변경
     public void accept(Enrollment enrollment) {
         if (this.eventType == EventType.CONFIRMATIVE && this.limitOfEnrollments > this.getNumberOfAcceptedEnrollments()) {
             enrollment.accept();
         }
     }
 
+    // 관리자 확인 모임인 경우 참가의 상태를 변경
     public void reject(Enrollment enrollment) {
         if (this.eventType == EventType.CONFIRMATIVE) {
             enrollment.reject();
         }
     }
 
+    // 수락 가능 확인
     public boolean isAcceptable(Enrollment enrollment) {
         return this.eventType == EventType.CONFIRMATIVE
                 && this.enrollments.contains(enrollment)
@@ -201,6 +207,7 @@ public class Event {
                 && !enrollment.isAccepted();
     }
 
+    // 수락 거부 확인
     public boolean isRejectable(Enrollment enrollment) {
         return this.eventType == EventType.CONFIRMATIVE
                 && this.enrollments.contains(enrollment)

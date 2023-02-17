@@ -146,7 +146,7 @@ public class EventController {
      * 모임 탈퇴
      *  - 선착순 모임이라면 탈퇴 이후 대기중인 모임 참가 신청 중 가장 빨리 신청한 것을 확정 상태로 변경
      */
-    // 모임 참가 신청
+    // 선착순 - 모임 참가 신청
     @PostMapping("/events/{id}/enroll")
     public String enroll(@CurrentUser Account account, @PathVariable String path, @PathVariable("id") Event event) {
         Study study = studyService.getStudyToEnroll(path);
@@ -154,7 +154,7 @@ public class EventController {
         return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
     }
 
-    // 모임 참가 취소
+    // 선착순 - 모임 참가 취소
     @PostMapping("/events/{id}/leave")
     public String leave(@CurrentUser Account account, @PathVariable String path, @PathVariable("id") Event event) {
         Study study = studyService.getStudyToEnroll(path);
@@ -162,7 +162,7 @@ public class EventController {
         return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
     }
 
-    // 모임 참가 신청 수락
+    // 관리자 확인 - 모임 참가 신청 수락
     @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/accept")
     public String acceptEnrollment(@CurrentUser Account account, @PathVariable String path, @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
         Study study = studyService.getStudyToUpdate(account, path);
@@ -170,6 +170,7 @@ public class EventController {
         return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
     }
 
+    // 관리자 확인 - 모임 참가 신청 거부
     @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/reject")
     public String rejectEnrollment(@CurrentUser Account account, @PathVariable String path, @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
         Study study = studyService.getStudyToUpdate(account, path);
@@ -177,6 +178,7 @@ public class EventController {
         return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
     }
 
+    // 출석 체크 확인
     @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/checkin")
     public String checkInEnrollment(@CurrentUser Account account, @PathVariable String path, @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
         Study study = studyService.getStudyToUpdate(account, path);
@@ -184,6 +186,7 @@ public class EventController {
         return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
     }
 
+    // 출석 체크 취소
     @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/cancel-checkin")
     public String cancelCheckInEnrollment(@CurrentUser Account account, @PathVariable String path, @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
         Study study = studyService.getStudyToUpdate(account, path);

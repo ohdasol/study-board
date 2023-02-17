@@ -24,7 +24,7 @@ public class MainController {
   private final EnrollmentRepository enrollmentRepository;
 
   /**
-   * 스터디 검색 기능
+   * 스터디 검색 기능 => querydsl을 이용해 구현
    *
    * 키워드를 입력 받아 스터디를 검색
    * 키워드는 스터디 제목, 관심사, 도시 이름
@@ -67,21 +67,31 @@ public class MainController {
           studyRepository.findFirst5ByMembersContainingAndClosedOrderByPublishedDateTimeDesc(
               account, false));
       return "home";
-    }
+    } // 로그인 후 홈 화면
     model.addAttribute("studyList",
         studyRepository.findFirst9ByPublishedAndClosedOrderByPublishedDateTimeDesc(true, false)); // 최근 공개된 스터디를 9개 조회하기 위해 JPA 쿼리 메서드를 사용
     return "index";
-  }
+  } // 로그인 전 홈 화면
 
   @GetMapping("/login")
   public String login() {
     return "login";
   }
 
+  /**
+   * 페이징 적용
+   * 
+   * Pageable 파라미터 추가, study는 Page 타입
+   * @PageableDefault를 이용하여 페이지 사이즈와 페이지, 정렬 방식 등의 기본 값 지정 가능
+   * 페이지 사이즈는 9, 정렬은 공개 날짜가 오래된 순
+   * 
+   * 페이지 내비게이션, 정렬 조건 등 기능 추가
+   */
+  // 스터디 검색, 키워드로 조회한 결과를 모델에 담아 search 페이지로 이동시킴
   @GetMapping("/search/study")
   public String searchStudy(String keyword, Model model,
       @PageableDefault(size = 9, sort = "publishedDateTime", direction = Sort.Direction.ASC) Pageable pageable) {
-    Page<Study> studyPage = studyRepository.findByKeyword(keyword, pageable);
+    Page<Study> studyPage = studyRepository.findByKeyword(keyword, pageable); // 키워드 검색을 위해 호출
     model.addAttribute("studyPage", studyPage);
     model.addAttribute("keyword", keyword);
     model.addAttribute("sortProperty", pageable.getSort().toString().contains("publishedDateTime")

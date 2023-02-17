@@ -26,7 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.stream.Collectors;
 
-// 스터디 설정 기능
+// 스터디 관련 설정
 @Controller
 @RequestMapping("/study/{path}/settings")
 @RequiredArgsConstructor
@@ -48,7 +48,7 @@ public class StudySettingsController {
      */
     private final ObjectMapper objectMapper;
 
-    // 소개 수정
+    // 스터디 설정 폼 조회(소개)
     @GetMapping("/description")
     public String viewStudySetting(@CurrentUser Account account, @PathVariable String path, Model model) {
         Study study = studyService.getStudyToUpdate(account, path);
@@ -61,6 +61,7 @@ public class StudySettingsController {
         return "study/settings/description";
     }
 
+    // 소개 수정
     @PostMapping("/description")
     public String updateStudy(@CurrentUser Account account, @PathVariable String path, @Valid StudyDescriptionForm studyDescriptionForm, Errors errors, Model model, RedirectAttributes attributes) {
         Study study = studyService.getStudyToUpdate(account, path);
@@ -74,7 +75,7 @@ public class StudySettingsController {
         return "redirect:/study/" + study.getEncodedPath() + "/settings/description";
     }
 
-    // 배너 페이지 라우팅, 업데이트
+    // 배너 페이지 라우팅
     @GetMapping("/banner")
     public String studyImageForm(@CurrentUser Account account, @PathVariable String path, Model model) {
         Study study = studyService.getStudyToUpdate(account, path);
@@ -83,6 +84,7 @@ public class StudySettingsController {
         return "study/settings/banner";
     }
 
+    // 배너 수정
     @PostMapping("/banner")
     public String updateBanner(@CurrentUser Account account, @PathVariable String path, String image, RedirectAttributes attributes) {
         Study study = studyService.getStudyToUpdate(account, path);
@@ -91,6 +93,7 @@ public class StudySettingsController {
         return "redirect:/study/" + study.getEncodedPath() + "/settings/banner";
     }
 
+    // 배너 사용
     @PostMapping("/banner/enable")
     public String enableStudyBanner(@CurrentUser Account account, @PathVariable String path) {
         Study study = studyService.getStudyToUpdate(account, path);
@@ -98,6 +101,7 @@ public class StudySettingsController {
         return "redirect:/study/" + study.getEncodedPath() + "/settings/banner";
     }
 
+    // 배너 미사용
     @PostMapping("/banner/disable")
     public String disableStudyBanner(@CurrentUser Account account, @PathVariable String path) {
         Study study = studyService.getStudyToUpdate(account, path);
@@ -119,7 +123,7 @@ public class StudySettingsController {
                 .collect(Collectors.toList()))); // writeValueAsString : Object -> JSON 변환 메서드
         return "study/settings/tags";
     }
-
+    
     @PostMapping("/tags/add")
     @ResponseStatus(HttpStatus.OK)
     public void addTag(@CurrentUser Account account, @PathVariable String path, @RequestBody TagForm tagForm) {
@@ -171,7 +175,7 @@ public class StudySettingsController {
     }
 
     /**
-     * 스터디 설정 기능
+     * 스터디 상태 설정
      *
      * 스터디 설정 내 메뉴 중에서 스터디 메뉴 페이지 라우팅
      */

@@ -21,5 +21,6 @@ public interface StudyRepositoryExtension {
 
   Page<Study> findByKeyword(String keyword, Pageable pageable);
 
+  // 로그인 전 스터디 조회를 위한 메서드
   List<Study> findByAccount(Set<Tag> tags, Set<Zone> zones);
 }

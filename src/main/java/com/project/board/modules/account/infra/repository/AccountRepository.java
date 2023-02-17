@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  * QClass 생성 방법 : Gradle -> Task -> other -> compileQuerydsl 실행
  * QClass 생성 위치 : build -> generated -> querydsl
  *
- * QuerydslPredicateExecutor : Spring Data JPA가 제공하는 인터페이스
+ * QuerydslPredicateExecutor : QueryDSL을 편하게 사용할 수 있게 Spring Data JPA가 제공하는 인터페이스
  * */
 @Transactional(readOnly = true)
 public interface AccountRepository extends JpaRepository<Account, Long>,
@@ -32,6 +32,7 @@ public interface AccountRepository extends JpaRepository<Account, Long>,
 
   Account findByNickname(String nickname);
 
+  // 로그인 후 홈 화면 진입
   @EntityGraph(attributePaths = {"tags", "zones"})
   Account findAccountWithTagsAndZonesById(Long id);
 }

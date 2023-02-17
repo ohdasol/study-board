@@ -53,7 +53,7 @@ public class StudyController {
     }
 
     /**
-     * 스터디 조회
+     * 스터디 조회 화면
      * 생성한 스터디 URL을 PathParameter로 전달받아서 StudyRepository에서 찾아 스터디 정보를 모델로 전달하고 view.html 페이지로 이동
      */
     @GetMapping("/study/{path}")
@@ -63,7 +63,7 @@ public class StudyController {
         return "study/view";
     }
 
-    // 스터디 조회 뷰에서 구성원 메뉴 클릭 후 관련 페이지 이동
+    // 스터디 조회 화면에서 구성원 메뉴 클릭 후 관련 페이지 이동
     @GetMapping("/study/{path}/members")
     public String viewStudyMembers(@CurrentUser Account account, @PathVariable String path, Model model) {
         model.addAttribute(account);
@@ -71,7 +71,7 @@ public class StudyController {
         return "study/members";
     }
 
-    // 스터디 회원 가입
+    // 스터디 가입
     @GetMapping("/study/{path}/join")
     public String joinStudy(@CurrentUser Account account, @PathVariable String path) {
         Study study = studyRepository.findStudyWithMembersByPath(path);
@@ -79,7 +79,7 @@ public class StudyController {
         return "redirect:/study/" + study.getEncodedPath() + "/members";
     }
 
-    // 스터디 회원 탈퇴
+    // 스터디 탈퇴
     @GetMapping("/study/{path}/leave")
     public String leaveStudy(@CurrentUser Account account, @PathVariable String path) {
         Study study = studyRepository.findStudyWithMembersByPath(path);

@@ -39,6 +39,7 @@ public class EventForm {
     @Min(2)
     private Integer limitOfEnrollments = 2;
 
+    // 모임 수정 화면에서 기존 모임 내용을 표시해 줘야 하므로 Event Entity의 값으로 EventForm을 담아서 전달
     public static EventForm from(Event event) {
         EventForm eventForm = new EventForm();
         eventForm.title = event.getTitle();

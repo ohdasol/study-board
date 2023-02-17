@@ -25,6 +25,7 @@ public class NotificationController {
      *
      * 알림 버튼을 클릭했을 때 읽지 않은 알림을 보여주고 읽은 알림도 확인하거나 삭제할 수 있음
      */
+    // 알림 버튼 클릭했을 때 진입
     @GetMapping("/notifications")
     public String getNotifications(@CurrentUser Account account, Model model) {
         List<Notification> notifications = notificationRepository.findByAccountAndCheckedOrderByCreatedDesc(account, false);
@@ -45,12 +46,14 @@ public class NotificationController {
         return "notification/list";
     }
 
+    // 알림 삭제
     @DeleteMapping("/notifications")
     public String deleteNotifications(@CurrentUser Account account) {
         notificationRepository.deleteByAccountAndChecked(account, true);
         return "redirect:/notifications";
     }
 
+    // 공통적인 기능을 메서드로 추출
     private void putCategorizedNotifications(Model model, List<Notification> notifications, long numberOfChecked, long numberOfNotChecked) {
         ArrayList<Notification> newStudyNotifications = new ArrayList<>();
         ArrayList<Notification> eventEnrollmentNotifications = new ArrayList<>();
@@ -79,14 +82,4 @@ public class NotificationController {
         model.addAttribute("watchingStudyNotifications", watchingStudyNotifications);
     }
 
-    /**
-     * 스터디 변경시 알림 기능 구현
-     *
-     * 스터디 공개 때 알림을 보내는 것과 마찬가지로 특정 시점에 이벤트를 발생시키는 방법으로 구현
-     *
-     * 알림을 전송하는 시점
-     * - 스터디 소개를 업데이트 했을 때
-     * - 스터디가 종료되었을 때
-     * - 스터디 팀원을 모집할 때, 모집이 종료 되었을 때
-     */
 }

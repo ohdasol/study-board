@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * @ControllerAdvice : 모든 @Controller에 대해 예외를 잡아 처리해주는 어노테이션
  * @ExceptionHandler : @Controller, @RestController가 적용된 Bean에서 발생하는 예외를 잡아서 하나의 메서드에서 처리해 주는 기능
  *
+ * 중간중간에 예외처리할 때 발생시킨 RuntimeException들을 catch하여 처리하는 부분만 구현
  */
 @ControllerAdvice
 @Slf4j
