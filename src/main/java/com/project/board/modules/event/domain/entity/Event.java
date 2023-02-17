@@ -34,7 +34,7 @@ public class Event {
     @Id
     @GeneratedValue
     private Long id;
-
+    
     @ManyToOne // 기본 값을 사용하여 단방향 관계를 나타냄
     private Study study;
 
@@ -62,7 +62,7 @@ public class Event {
     private Integer limitOfEnrollments;
 
     @OneToMany(mappedBy = "event") @ToString.Exclude // 모임과 참가는 서로 양방향 연관관계를 가지고 있으므로 mappedBy를 이용하여 관계를 정의
-    @OrderBy("enrolledAt") // 참석 리스트가 조회될 때 참석 날짜 기준으로 정렬
+    @OrderBy("enrolledAt") // 참석 리스트가 조회될 때 참석 날짜 기준으로 정렬, ORDER BY절과 같음
     private List<Enrollment> enrollments = new ArrayList<>(); // Collection 필드 초기화
 
     @Enumerated(EnumType.STRING)

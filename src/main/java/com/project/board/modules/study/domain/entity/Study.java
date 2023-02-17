@@ -28,6 +28,23 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
 /**
+ * 연관관계 매핑? 객체의 참조와 테이블의 외래키를 매핑하는 것
+ *
+ * 1. 방향
+ * 단방향 관계 : 두 엔티티가 관계를 맺을 때, 한 쪽의 엔티티만 참조하고 있는 것
+ * 양방향 관계 : 두 엔티티가 관계를 맺을 때, 양 쪽이 서로 참조하고 있는 것
+ *
+ * 2. 다중성
+ * 관계에 있는 두 엔티티는 다음 중 하나의 관계를 가짐
+ * ManyToOne : 다대일 ( N : 1 )
+ * OneToMany : 일대다 ( 1 : N )
+ * OneToOne : 일대일 ( 1 : 1 )
+ * ManyToMany : 다대다 ( N : N ), 실무에서 미사용
+ *
+ * @ManyToOne으로 양방향으로 관계를 맺으려면 mappedBy 속성 추가
+ */
+
+/**
  * 스터디 관리 도메인 설계
  *
  * 속성은 아래와 같다
