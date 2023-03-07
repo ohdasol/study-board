@@ -7,7 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-// 검증 객체 전달을 위한 클래스
+// 회원가입 정보를 전달할 폼 클래스
 @Data
 public class SignUpForm {
     @NotBlank // @Valid가 동작하려면 검증할 대상

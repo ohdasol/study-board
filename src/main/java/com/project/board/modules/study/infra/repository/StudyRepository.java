@@ -14,6 +14,7 @@ public interface StudyRepository extends JpaRepository<Study, Long>, StudyReposi
 
   boolean existsByPath(String path);
 
+  // @NamedEntityGraph에 정의한 이름 작성
   @EntityGraph(value = "Study.withAll", type = EntityGraph.EntityGraphType.LOAD)
   Study findByPath(String path);
 

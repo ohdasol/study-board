@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+// 중복 이메일, 닉네임 여부 확인을 위한 커스텀 검증 클래스 작성
 @Component // 빈 생성
 @RequiredArgsConstructor
 public class SignUpFormValidator implements Validator {

@@ -34,7 +34,7 @@ public class Event {
     @Id
     @GeneratedValue
     private Long id;
-    
+
     @ManyToOne // 기본 값을 사용하여 단방향 관계를 나타냄
     private Study study;
 
@@ -126,6 +126,7 @@ public class Event {
         return this.limitOfEnrollments - accepted;
     }
 
+    // 모임 참가 신청자 수 확인 메서드
     public Long getNumberOfAcceptedEnrollments() {
         return this.enrollments.stream()
                 .filter(Enrollment::isAccepted)
@@ -184,14 +185,14 @@ public class Event {
         }
     }
 
-    // 관지자 확인 모임이고, 참석 가능할 경우 참가 상태 변경
+    // 관지자 확인 모임이고, 참가 신청 수락
     public void accept(Enrollment enrollment) {
         if (this.eventType == EventType.CONFIRMATIVE && this.limitOfEnrollments > this.getNumberOfAcceptedEnrollments()) {
             enrollment.accept();
         }
     }
 
-    // 관리자 확인 모임인 경우 참가의 상태를 변경
+    // 관리자 확인 모임이고, 참가 신청 거절
     public void reject(Enrollment enrollment) {
         if (this.eventType == EventType.CONFIRMATIVE) {
             enrollment.reject();

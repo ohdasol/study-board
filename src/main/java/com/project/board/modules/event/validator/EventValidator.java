@@ -43,6 +43,9 @@ public class EventValidator implements Validator {
         return time.isBefore(targetTime);
     }
 
+    /**
+     * 수정하는 모집 인원이 현재 참가 수보다 큰지 검증 로직 추가
+     */
     public void validateUpdateForm(EventForm eventForm, Event event, Errors errors) {
         if (eventForm.getLimitOfEnrollments() < event.getNumberOfAcceptedEnrollments()) {
             errors.rejectValue("limitOfEnrollments", "wrong.value", "확인된 참가 신청보다 모집 인원 수가 커야 합니다.");

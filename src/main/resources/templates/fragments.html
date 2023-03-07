@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
 <head th:fragment="head">
     <meta charset="UTF-8">
     <title>Study With Me</title>
@@ -96,6 +96,9 @@
                     <input class="form-control me-sm-2" name="keyword" type="search" placeholder="스터디 찾기"
                            aria-label="Search"/>
                 </form>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a href="/board/boardList" class="nav-link px-2 text-white" style="font-size: 20px; margin-left: 30px"x>커뮤니티</a>
+            </li>
             </li>
         </ul>
 

@@ -30,6 +30,7 @@ public class AccountController {
      * */
     @InitBinder("signUpForm")
     public void initBinder(WebDataBinder webDataBinder) {
+
         webDataBinder.addValidators(signUpFormValidator);
     }
 

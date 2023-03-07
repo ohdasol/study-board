@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-light">
+<nav th:replace="fragments.html :: navigation-bar"></nav>
+
+<div class="container" style="max-width: 70%">
+    <table class="table table-hover">
+        <h3 style="margin: 60px 30px 30px 30px; text-align: center">자유 게시판</h3>
+        <form class="form-inline d-flex justify-content-end" method="GET" th:action="@{/board/boardList}" th:value="${param.searchText}">
+            <div class="form-group mx-sm-3 mb-2 pull-right">
+                <label for="searchText" class="sr-only" style="float: right">검색</label>
+                <input type="text" class="form-control" id="searchText" name="searchText">
+                <button type="submit" class="btn btn-primary mb-2" style="float: right; margin-top: 10px" >검색</button>
+            </div>
+        </form>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일</th>
+            <th>조회수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${boards}">
+            <td><a th:href="@{'/board/boardContent/' + ${board.id}}"><span th:text="${board.id}"></span></a></td>
+            <td th:text="${board.title}"></td>
+            <td th:text="${board.writer}"></td>
+            <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${board.countVisit}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <hr/>
+    <button type="button" class="btn btn-default pull-right" onclick="location.href='/board/boardForm'">글쓰기</button>
+
+    <div class="center text-center" style="margin-top: 60px">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justifiy-content-center" style="justify-content: center; display: flex" th:if="${totalPage != 0}">
+                <li class="page-item"><a class="page-link" style="margin-right: 20px" th:href="@{boardList(page=${boards.pageable.pageNumber - 1}, searchText=${param.searchText})}">Previous</a></li>
+                <li class="" th:classappend="${page == boards.pageable.pageNumber + 1} ? 'disabled'" th:each="page : ${#numbers.sequence(startPage, endPage)}">
+
+                    <a th:href="@{boardList(page=${page - 1}, searchText=${param.searchText})}" th:text="${page}"></a>
+                </li>
+                <li class="page-item"><a class="page-link" style="margin-left: 20px" th:href="@{boardList(page=${boards.pageable.pageNumber + 1}, searchText=${param.searchText})}">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+<div  class="text-center">
+    <ul class="pagination">
+
+    </ul>
+</div>
+<div th:replace="fragments::footer"></div>
+<!--<script src="static/js/bootstrap.bundle.min.js"></script>-->
+
+</body>
+</html>

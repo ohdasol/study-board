@@ -54,7 +54,7 @@ public class StudyController {
 
     /**
      * 스터디 조회 화면
-     * 생성한 스터디 URL을 PathParameter로 전달받아서 StudyRepository에서 찾아 스터디 정보를 모델로 전달하고 view.html 페이지로 이동
+     * 생성한 스터디 URL을 PathParameter로 전달받아서 StudyRepository에서 찾아 스터디 정보를 모델로 전달하고 boardList.html 페이지로 이동
      */
     @GetMapping("/study/{path}")
     public String viewStudy(@CurrentUser Account account, @PathVariable String path, Model model) {

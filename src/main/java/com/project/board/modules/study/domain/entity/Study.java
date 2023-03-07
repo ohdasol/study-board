@@ -66,10 +66,11 @@ import org.hibernate.annotations.ColumnDefault;
  * N+1 문제 ?
  * 조회 쿼리를 날렸을 때 데이터들의 개수만큼 조인 쿼리가 발생하는 것(성능에 영향을 주기 때문에 방치할 수 없음)
  *
- * NamedEntityGraph : EntityGraph에 이름을 명시, Study.withAll
+ * NamedEntityGraph : Entity 클래스에 정의, name에는  repository에서 사용할 이름을 정의,  attributeNodes에는 연관관계가 된 클래스의 변수명 정의
  * tags, zones, managers, members 4가지 attribute에 대해 Lazy(지연)로딩을 사용하지 않음
  *
- * 지연로딩 ? 지연로딩이 설정되어 있는 엔티티는 프록시 객체로 가져옴(실체 객체를 호출하면 중간에 가로채 다른 동작을 수행하는 객체로 변경)
+ * 즉시 로딩 - 연관 관계에 있는 엔티티들을 모두 조회
+ * 지연 로딩 - 연관 관계에 있는 엔티티들을 가져오지 않고 필요할 때 조회
  */
 @Entity
 @NamedEntityGraph(name = "Study.withAll", attributeNodes = {
@@ -139,7 +140,7 @@ public class Study {
 
   private LocalDateTime recruitingUpdatedDateTime;
 
-  private boolean recruiting;
+  private boolean recruiting; // 모집 중인지 여부
 
   private boolean published;
 
@@ -247,6 +248,7 @@ public class Study {
     this.title = newTitle;
   }
 
+  // 스터디 삭제 여부 물음
   public boolean isRemovable() {
     return !this.published;
   }
@@ -269,11 +271,13 @@ public class Study {
     this.recruitingUpdatedDateTime = LocalDateTime.now();
   }
 
+  // 스터디 참여
   public void addMember(Account account) {
     this.members.add(account);
     this.memberCount++;
   }
 
+  // 스터디 탈퇴
   public void removeMember(Account account) {
     this.members.remove(account);
     this.memberCount--;

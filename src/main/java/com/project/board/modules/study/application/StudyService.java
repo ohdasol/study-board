@@ -112,26 +112,36 @@ public class StudyService {
         study.removeZone(zone);
     }
 
+    // 스터디 공개
     public void publish(Study study) {
         study.publish();
         eventPublisher.publishEvent(new StudyCreatedEvent(study));
     }
 
+    // 스터디 공개 중단
     public void close(Study study) {
         study.close();
         eventPublisher.publishEvent(new StudyUpdateEvent(study, "스터디를 종료했습니다."));
     }
 
+    // 스터디 팀원 모집 시작
     public void startRecruit(Study study) {
         study.startRecruit();
         eventPublisher.publishEvent(new StudyUpdateEvent(study, "팀원 모집을 시작합니다."));
     }
 
+    // 스터디 팀원 모집 종료
     public void stopRecruit(Study study) {
         study.stopRecruit();
         eventPublisher.publishEvent(new StudyUpdateEvent(study, "팀원 모집을 종료했습니다."));
     }
 
+    /**
+     * 검증
+     * 
+     * 컨트롤러에서 객체가 아닌 단일 타입으로 값을 받아온 경우 Validator 사용 불가
+     * 수정하는 경로가 유효한지 확인하는 isValidPath 메서드와 수정하는 스터디명이 유효한지 확인하는 isValideTitle 메서드 구현
+     */
     public boolean isValidPath(String newPath) {
         if (!newPath.matches(StudyForm.VALID_PATH_PATTERN)) {
             return false;
@@ -139,6 +149,7 @@ public class StudyService {
         return !studyRepository.existsByPath(newPath);
     }
 
+    // 스터디 경로 수정
     public void updateStudyPath(Study study, String newPath) {
         study.updatePath(newPath);
     }
@@ -147,6 +158,7 @@ public class StudyService {
         return newTitle.length() <= 50;
     }
 
+    // 스터디 이름 수정
     public void updateStudyTitle(Study study, String newTitle) {
         study.updateTitle(newTitle);
     }

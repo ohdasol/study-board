@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class ConsoleEmailService implements EmailService {
     @Override
     public void sendEmail(EmailMessage emailMessage) {
+
         log.info("sent email: {}", emailMessage.getMessage());
     }
 }

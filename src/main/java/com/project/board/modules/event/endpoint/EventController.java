@@ -36,6 +36,7 @@ public class EventController {
     private final EnrollmentRepository enrollmentRepository;
     private final EventValidator eventValidator;
 
+    // EventValidator 등록
     @InitBinder("eventForm")
     public void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(eventValidator);

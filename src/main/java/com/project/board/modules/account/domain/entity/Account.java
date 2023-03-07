@@ -1,16 +1,16 @@
 package com.project.board.modules.account.domain.entity;
 
 import com.project.board.modules.account.endpoint.controller.form.NotificationForm;
+import com.project.board.modules.board.domain.entity.Board;
+import com.project.board.modules.board.domain.entity.BoardComment;
 import com.project.board.modules.tag.domain.entity.Tag;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
 /**
  * access = AccessLevel.PROTECTED : 무분별한 객체 생성에 대해 체크
  * @ToString : toString() 메소드를 자동으로 생성
@@ -52,6 +52,12 @@ public class Account extends AuditingEntity {
 
     @ManyToMany @ToString.Exclude
     private Set<Zone> zones = new HashSet<>();
+
+    @OneToMany(mappedBy = "account")
+    private List<Board> boardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "account")
+    private List<BoardComment> boardCommentList = new ArrayList<>();
 
     public static Account with(String email, String nickname, String password) {
         Account account = new Account();

@@ -151,6 +151,8 @@ public class SettingsController { // 계정 설정 관련 컨트롤러
      * 관심 주제 추가시 자동완성 기능을 구현
      * 기존에 있는 태그 목록에서 선택 가능
      * tagify 라이브러리의 기능을 활용
+     *
+     * whitelist를 작성하기 위해 모든 Tag를 가져와서 JSON타입으로 변환하기 위해 ObjectMapper를 주입받아 Tag리스트 객체를 JSON으로 바꿔줌
      */
     // 관심 주제 뷰로 라우팅
     @GetMapping(SETTINGS_TAGS_URL)

@@ -16,8 +16,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * 참가(Enrollment) 엔티티 설계
- *
+ * 참가(Enrollment, 모임 참가자) 엔티티 설계
+ * 
+ * 
  * Enrollment는 Study와는 관계를 가질 필요가 없음
  * Account와는 단방향 연관관계
  * Event와는 양방향 연관관계
